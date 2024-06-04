@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Appli de Chat</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <style>
+        body {
+            background: #ceb59f;
+        }
+
+        #container {
+            width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #chatWindow {
+            height: 350px;
+            width: 550px;
+            border: 2px solid #bcbcbc;
+            border-radius: 20px;
+            padding: 20px;
+            background: #efd1b5;
+        }
+
+        #mainWrapper {
+            display: block;
+        }
+
+        #chatWrapper {
+            float: left;
+            border: 1px #ccc solid;
+            border-radius: 10px;
+            background: #f4f4f4;
+            padding: 10px;
+        }
+
+        #userWrapper {
+            float: left;
+            border: 1px #ccc solid;
+            border-radius: 10px;
+            background: #d7b599;
+            padding: 10px;
+            margin-left: 20px;
+            width: 150px;
+            max-height: 200px;
+        }
+
+        input {
+            height: 30px;
+            border: solid 2px #d7d7d7;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<section class="todoapp">
+    <nav class="nav">
+        <ul>
+            <li class="user"><%= user.name || user.username %></li>
+            <li>
+                <form action="/logout" method="post">
+                    <button class="logout" type="submit">Sign out</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+    <header class="header">
+        <h1>ChatIO</h1>
+    </header>
+    <div id="container">
+
+        <div id="mainWrapper">
+            <h2>Chat avec Socket.IO</h2>
+            <div id="chatWrapper"></div>
+            <div id="chatWindow"></div>
+            <form id="messageForm">
+                <label for="message"></label><input type="text" size="35" id="message" placeholder="SaySomething">
+                <input type="submit" value="Submit" id="submitMessage" disabled>
+            </form>
+        </div>
+        <div id="userWrapper">
+            <div id="users"></div>
+        </div>
+    </div>
+</section>
+<footer class="info">
+    <p>Authentication powered by <a href="https://www.passportjs.org">Passport</a></p>
+</footer>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    $(function () {
+        const username = '<%= user.name || user.username %>';
+        const socket = io.connect();
+        const $messageForm = $('#messageForm');
+        const $message = $('#message');
+        const $chat = $('#chatWindow');
+        const $users = $('#users');
+        const $submitMessage = $('#submitMessage');
+
+        socket.username = username;
+
+        socket.emit('new user', socket.username, function (data) {
+            if (data) {
+                console.log('Username is accepted');
+            } else {
+                console.log('Username is taken');
+            }
+        });
+
+        $message.on('input', function () {
+            if ($message.val().trim() === '') {
+                $submitMessage.prop('disabled', true);
+            } else {
+                $submitMessage.prop('disabled', false);
+            }
+        });
+
+        socket.on('usernames', function (data) {
+            console.log("usernames", data);
+            var html = '';
+            for (i = 0; i < data.length; i++) {
+                html += '🥚' + data[i] + '<br>';
+            }
+            $users.html(html);
+        });
+
+        $messageForm.submit(function (e) {
+            e.preventDefault();
+            if ($message.val().trim() !== '') {
+                socket.emit('send message', $message.val());
+                fetch('http://localhost:3030/message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: socket.username,
+                        message: $message.val(),
+                        date: new Date().toISOString(),
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => console.log('Message ajouté avec succès:', data))
+                    .catch((error) => {
+                        console.error('Erreur:', error);
+                    });
+                $message.val('');
+                $submitMessage.prop('disabled', true);
+
+                $message.val('');
+                $submitMessage.prop('disabled', true);
+            }
+        });
+
+        //marche pas :(
+        socket.on('load old msgs', function (msgs) {
+            for (let i = 0; i < msgs.length; i++) {
+                $chat.append('<strong style="color: green">' + msgs[i].user + '</strong> ' + '> ' + msgs[i].msg + ' [' + msgs[i].timestamp + ']' + '<br>');
+            }
+        });
+
+        socket.on('new message', function (data) {
+            $chat.append('<strong style="color: green">' + socket.username + '</strong> ' + '> ' + data.msg + ' [' + new Date().toLocaleString() + ']' + '<br>');
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+.todohome {
+    margin: 130px 0 40px 0;
+    position: relative;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.todohome h1 {
+    position: absolute;
+    top: -140px;
+    width: 100%;
+    font-size: 80px;
+    font-weight: 200;
+    text-align: center;
+    color: #b83f45;
+    -webkit-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
+}
+
+.todohome section {
+    padding: 20px;
+    text-align: center;
+}
+
+.todohome h2 {
+    padding-bottom: 48px;
+    font-size: 28px;
+    font-weight: 300;
+}
+
+.todohome .button {
+    padding: 13px 45px;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    border-radius: 5px;
+    background: #d83f45;
+    transition: background 0.3s ease;
+}
+
+.todohome .button:hover {
+    background: #b83f45;
+}
+
+.todohome a.button {
+    text-decoration: none;
+}
