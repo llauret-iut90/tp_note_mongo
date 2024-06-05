@@ -84,7 +84,7 @@
             <div id="chatWindow"></div>
             <form id="messageForm">
                 <label for="message"></label><input type="text" size="35" id="message" placeholder="SaySomething">
-                <input type="submit" value="Submit" id="submitMessage" disabled>
+                <input type="submit" value="Submit" id="submitMessage">
             </form>
         </div>
         <div id="userWrapper">
@@ -164,11 +164,11 @@
         });
 
         //marche pas :(
-        socket.on('load old msgs', function (msgs) {
-            for (let i = 0; i < msgs.length; i++) {
-                $chat.append('<strong style="color: green">' + msgs[i].user + '</strong> ' + '> ' + msgs[i].msg + ' [' + msgs[i].timestamp + ']' + '<br>');
-            }
-        });
+        // socket.on('load old msgs', function (msgs) {
+        //     for (let i = 0; i < msgs.length; i++) {
+        //         $chat.append('<strong style="color: green">' + msgs[i].user + '</strong> ' + '> ' + msgs[i].msg + ' [' + msgs[i].timestamp + ']' + '<br>');
+        //     }
+        // });
 
         socket.on('new message', function (data) {
             $chat.append('<strong style="color: green">' + socket.username + '</strong> ' + '> ' + data.msg + ' [' + new Date().toLocaleString() + ']' + '<br>');

@@ -26,7 +26,7 @@ const io = socketIO(server);
 
 
 let usernames = [];
-let chatHistory = [];
+// let chatHistory = [];
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -85,7 +85,7 @@ app.get('/', (req, res) => {
 
 io.on('connection', function (socket) {
     console.log('Socket connected');
-    socket.emit('chat history', chatHistory);
+    // socket.emit('chat history', chatHistory);
     socket.on('new user', function (data, callback) {
         if (usernames.indexOf(data) !== -1) {
             callback(false);
@@ -106,7 +106,7 @@ io.on('connection', function (socket) {
     socket.on('send message', function (data) {
         var timestamp = new Date().toLocaleTimeString();
         var message = {msg: data, user: socket.username, timestamp: timestamp};
-        chatHistory.push(message);
+        // chatHistory.push(message);
         io.sockets.emit('new message', message);
     });
 
