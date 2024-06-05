@@ -88,6 +88,19 @@ class MessageRoute {
          */
         router.delete('/message', messageController.apiDeleteMessagesFromUser);
 
+
+        /**
+         * @swagger
+         * /message/all:
+         *   delete:
+         *     summary: Delete all messages from the MongoDB collection
+         *     responses:
+         *       200:
+         *         description: All messages were successfully deleted
+         */
+
+        router.delete('/message/all', messageController.apiDeleteAllMessages);
+
         /**
          * @swagger
          * /message/users/date:
