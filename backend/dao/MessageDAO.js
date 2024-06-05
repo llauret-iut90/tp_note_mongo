@@ -53,7 +53,7 @@ class MessageDAO {
         }
     }
 
-    static async getMessageWithPattern({pattern = ''}) {
+    static async getMessageWithPattern({pattern}) {
         try {
             return await MessageDAO.messages.find({message: {$regex: pattern}}).toArray();
         } catch (e) {
