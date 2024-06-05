@@ -163,15 +163,17 @@
             }
         });
 
-        //marche pas :(
-        // socket.on('load old msgs', function (msgs) {
-        //     for (let i = 0; i < msgs.length; i++) {
-        //         $chat.append('<strong style="color: green">' + msgs[i].user + '</strong> ' + '> ' + msgs[i].msg + ' [' + msgs[i].timestamp + ']' + '<br>');
-        //     }
-        // });
+        // marche pas :(
+        socket.on('chat history', function (msgs) {
+            console.log('je recoit bien les messages (ou pas)')
+            for (let i = 0; i < msgs.length; i++) {
+                console.log('messages : ', msgs[i])
+                $chat.append('<strong style="color: green">' + msgs[i].user + '</strong> ' + '> ' + msgs[i].msg + ' [' + msgs[i].timestamp + ']' + '<br>');
+            }
+        });
 
         socket.on('new message', function (data) {
-            $chat.append('<strong style="color: green">' + socket.username + '</strong> ' + '> ' + data.msg + ' [' + new Date().toLocaleString() + ']' + '<br>');
+            $chat.append('<strong style="color: green">' + data.user + '</strong> ' + '> ' + data.msg + ' [' + new Date().toLocaleString() + ']' + '<br>');
         });
     });
 </script>

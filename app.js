@@ -26,7 +26,7 @@ const io = socketIO(server);
 
 
 let usernames = [];
-// let chatHistory = [];
+let chatHistory = [];
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -94,6 +94,7 @@ io.on('connection', function (socket) {
             socket.username = data;
             usernames.push(socket.username);
             updateUsername();
+            updateChatHistory();
         }
     });
 
@@ -102,11 +103,18 @@ io.on('connection', function (socket) {
         io.sockets.emit('usernames', usernames);
     }
 
+    function updateChatHistory() {
+        console.log('jenvoie les msg dans history : ', chatHistory)
+        io.sockets.emit('chat history', chatHistory)
+    }
+
     //Envoyer un message
     socket.on('send message', function (data) {
         var timestamp = new Date().toLocaleTimeString();
         var message = {msg: data, user: socket.username, timestamp: timestamp};
         // chatHistory.push(message);
+        chatHistory.push(message)
+        console.log('message', message)
         io.sockets.emit('new message', message);
     });
 
