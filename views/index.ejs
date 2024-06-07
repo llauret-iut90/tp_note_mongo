@@ -9,143 +9,260 @@
     <link rel="stylesheet" href="/css/app.css">
     <style>
         body {
-            background: #f5f5f5;
+            background: #222;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            max-height: 100%;
+            box-sizing: border-box;
+            color: #ddd;
         }
 
-        #container {
-            width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            justify-content: center;
-            align-items: start;
-        }
-
-        #chatWindow {
-            height: 200px;
-            width: 100%;
-            border: 2px solid #ddd;
-            overflow: auto;
-            border-radius: 10px;
-            padding: 20px;
-            background: #fff;
-            font-family: 'Courier New', monospace;
-            grid-column: span 2;
-        }
-
-        #mainWrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 200%;
-        }
-
-        #chatWrapper, #userWrapper {
-            border: 1px #ccc solid;
-            border-radius: 10px;
-            background: #f4f4f4;
-            padding: 10px;
-            width: 100%;
-        }
-
-        #userWrapper {
-            max-height: 200px;
-            overflow: auto;
-        }
-
-        input, button {
-            height: 30px;
-            border: solid 2px #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 16px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        button {
-            cursor: pointer;
-            background-color: #007BFF;
+        header.header {
+            background: green;
             color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .user-info {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .logout {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        .logout:hover {
+            background-color: green;
         }
 
-        #msgWithPattern {
-            margin-top: 10px;
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 50px 50px 0 50px;
+            gap: 20px;
+        }
+
+        .leftside {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 50%;
+        }
+
+        #chatWindow {
+            flex: 1;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            background: black;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            max-height: 500px;
+            color: #ddd;
+        }
+
+        #chatWindow .timestamp {
+            color: red;
+            float: right;
+        }
+
+        #messageForm {
+            display: flex;
+            gap: 10px;
+        }
+
+        #messageForm input[type="text"], #messageForm button {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background: black;
+            color: #ddd;
+        }
+
+        #messageForm button {
+            background-color: green;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #messageForm button:hover {
+            background-color: green;
+        }
+
+        .rightside {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .users {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-height: 200px;
+        }
+
+        .actionbuttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #userWrapper {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background: black;
+            padding: 10px;
+            width: 50%;
+            max-height: 150px;
+            overflow-y: auto;
+            color: #ddd;
+        }
+
+        .actionbuttons .action-item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .actionbuttons .action-item input, .actionbuttons .action-item button {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background: black;
+            color: #ddd;
+        }
+
+        .actionbuttons .action-item button {
+            background-color: green;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .actionbuttons .action-item button:hover {
+            background-color: green;
+        }
+
+        #msgWithPattern, #conversationsByUser, #conversations {
             border: 1px solid #ccc;
             border-radius: 10px;
             padding: 10px;
-            background: #fff;
-            overflow: auto;
-            max-height: 200px;
+            background: black;
+            max-height: 150px;
+            overflow-y: auto;
+            color: #ddd;
         }
+
     </style>
 </head>
 <body>
-<section class="todoapp">
-    <nav class="nav">
-        <ul>
-            <li class="user"><%= user.name || user.username %></li>
-            <li>
-                <form action="/logout" method="post">
-                    <button class="logout" type="submit">Sign out</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
+<section>
     <header class="header">
-        <h1>ChatIO</h1>
+        <div class="header-content">
+            <h1>ChatIO</h1>
+            <ul class="user-info">
+                <li class="user"><%= user.name || user.username %></li>
+                <li>
+                    <form action="/logout" method="post">
+                        <button class="logout" type="submit">Sign out</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </header>
-    <div id="container">
 
-        <div id="mainWrapper">
-            <h2>Chat avec Socket.IO</h2>
-            <div id="chatWrapper"></div>
+    <div class="container">
+        <div class="leftside">
             <div id="chatWindow"></div>
             <form id="messageForm">
-                <label for="message"></label><input type="text" size="35" id="message" placeholder="SaySomething">
-                <input type="submit" value="Submit" id="submitMessage">
+                <input type="text" id="message" placeholder="Say something" required>
+                <button type="submit" id="submitMessage">Submit</button>
             </form>
-            <div id="pattern">
-                <label for="pattern"></label><input type="text" id="pattern" placeholder="Pattern">
-                <button id="getMsgWithPattern">Get msg with pattern</button>
-                <div id="msgWithPattern"></div>
+        </div>
+
+        <div class="rightside">
+            <div class="users">
+                <div id="userWrapper">
+                    <div id="users"></div>
+                </div>
+                <div id="userWrapper">
+                    <div id="participants"></div>
+                </div>
             </div>
 
-            <div id="deleteChat">
-                <label for="usernameDelete"></label><input type="text" id="usernameDelete" placeholder="Username">
-                <button id="deleteChat">Delete chat</button>
-            </div>
+            <div class="actionbuttons">
+                <div class="action-item">
+                    <div style="display: flex; gap: 10px">
+                        <div style="display: flex; flex-direction: column">
+                            <label for="pattern"></label><input type="text" id="pattern" placeholder="Pattern">
+                            <button id="getMsgWithPattern">Get msg with pattern</button>
+                        </div>
+                        <div style="width: 100%; max-height: 62px" id="msgWithPattern"></div>
+                    </div>
+                </div>
 
-            <div id="deleteEverything">
-                <button id="deleteEverything">Delete everything</button>
-            </div>
+                <div class="action-item">
+                    <div style="display: flex; gap: 10px; justify-content: space-between">
+                        <div style="display: flex; flex-direction: column">
+                            <input type="text" id="usernameDelete" placeholder="Username">
+                            <button id="deleteChat">Delete chat</button>
+                        </div>
+                        <button id="deleteEverything" style="background: red">Delete everything</button>
+                    </div>
+                </div>
 
-            <div id="getUserConversationsBetweenDates">
-                <label for="getUsername"></label><input type="text" name="getUsername" id="getUsername">
-                <label for="userFirstDate"></label><input type="date" id="userFirstDate">
-                <label for="userLastDate"></label><input type="date" id="userLastDate">
-                <button id="getUserConversationsBetweenDates">Get user conversations</button>
-                <div id="conversationsByUser"></div>
+                <div class="action-item">
+                    <div style="display: flex; gap: 20px">
+                        <input type="text" name="getUsername" id="getUsername" placeholder="Username">
+                        <div style="display: flex; flex-direction: column; gap: 10px; justify-content: space-between">
+                            <input type="date" id="userFirstDate">
+                            <input type="date" id="userLastDate">
+                        </div>
+                        <button id="getUserConversationsBetweenDates">Get user conversations</button>
+                        <div style="width: 100%" id="conversationsByUser"></div>
+                    </div>
+                </div>
+
+                <div class="action-item">
+                    <div style="display: flex; gap: 20px">
+                        <div style="display: flex; flex-direction: column; gap: 10px; justify-content: space-between">
+                            <input type="date" id="firstDate">
+                            <input type="date" id="lastDate">
+                        </div>
+                        <button id="getConversations">Get conversations</button>
+                        <div style="width: 100%" id="conversations"></div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        <div id="userWrapper">
-            <div id="users"></div>
-        </div>
-        <div id="userWrapper">
-            <div id="participants"></div>
-        </div>
-        <div id="userWrapper">
-            <label for="firstDate"></label><input type="date" id="firstDate">
-            <label for="lastDate"></label><input type="date" id="lastDate">
-            <button id="getConversations">Get conversations</button>
-            <div id="conversations"></div>
         </div>
     </div>
 </section>
@@ -159,7 +276,7 @@
     document.getElementById('getConversations').addEventListener('click', function () {
         const firstDate = document.getElementById('firstDate').value;
         const lastDate = document.getElementById('lastDate').value;
-        const username = '<%= user.name || user.username %>'; // replace this with the actual username
+        const username = '<%= user.name || user.username %>';
 
         fetch(`http://localhost:3030/message/users/date?username=${username}&firstDate=${firstDate}&lastDate=${lastDate}`)
             .then(response => response.json())
@@ -342,7 +459,9 @@
         });
 
         socket.on('new message', function (data) {
-            $chat.append('<strong style="color: green">' + data.user + '</strong> ' + '> ' + data.msg + ' [' + new Date().toLocaleString() + ']' + '<br>');
+            const messageClass = data.user === username ? 'self' : 'other';
+            $chat.append('<p class="' + messageClass + '"><strong>' + data.user + '</strong> > ' + data.msg + ' <span class="timestamp">[' + new Date().toLocaleString() + ']</span></p>');
+            $chat[0].scrollTop = $chat[0].scrollHeight;
         });
     });
 </script>
