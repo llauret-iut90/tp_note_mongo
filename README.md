@@ -115,7 +115,7 @@ fetch('http://localhost:3030/message', {
     });
 ```
 
-insérer gif
+![](./readmeimg/insert.gif)
 
 #### Actions du chat
 
@@ -150,7 +150,7 @@ static async getMessageWithPattern({pattern}) {
     }
 ```
 
-insérer gif
+![](./readmeimg/pattern.gif)
 
 - Supprimmer un chat d'un user
 
@@ -182,7 +182,7 @@ $deleteChat.click(function () {
     }
 ```
 
-insérer gif
+![](./readmeimg/deletemsguser.gif)
 
 - Delete tout les chat
 
@@ -213,7 +213,7 @@ insérer gif
     }
 ```
 
-gif
+![](./readmeimg/deleteall.gif)
 
 - Avoir les conversations d'un user entre une entre des dates
 
@@ -251,12 +251,38 @@ static async getMessagesFromUserBetweenDates({username, firstDate, lastDate}) {
     }
 ```
 
-- Avoir des conversations entre des dates
+![](./readmeimg/getusermsg.gif)
 
-A corriger
+- Avoir des conversations avant une date
 
 ```js
+document.getElementById('getConversations').addEventListener('click', function () {
+    const lastDate = document.getElementById('lastDate').value;
 
+    fetch(`http://localhost:3030/message/time?date=${lastDate}`)
+        .then(response => response.json())
+        .then(data => {
+            const conversationsDiv = document.getElementById('conversations');
+            conversationsDiv.innerHTML = '';
+            data.forEach(conversation => {
+                const p = document.createElement('p');
+                p.textContent = conversation.message;
+                conversationsDiv.appendChild(p);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+});
 ```
 
-- Avoir toutes les conersations depuis telle date
+```
+    static async getMessagesBeforeDate({date}) {
+        try {
+            return await MessageDAO.messages.find({date: {$lt: new Date(date).toISOString()}}).toArray();
+        } catch (e) {
+            console.error(`Unable to get messages between dates: ${e}`);
+            return {error: e};
+        }
+    }
+```
+
+![](./readmeimg/getmsgb4date.gif)

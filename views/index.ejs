@@ -18,6 +18,30 @@
             color: #ddd;
         }
 
+        button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green */
+            color: white;
+        }
+
+        button:active {
+            background-color: #3e8e41; /* Even darker green */
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
         header.header {
             background: green;
             color: white;
@@ -79,7 +103,7 @@
             background: black;
             overflow-y: auto;
             font-family: 'Courier New', monospace;
-            max-height: 500px;
+            max-height: 366px;
             color: #ddd;
         }
 
@@ -181,6 +205,10 @@
             color: #ddd;
         }
 
+        a {
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -191,9 +219,10 @@
             <ul class="user-info">
                 <li class="user"><%= user.name || user.username %></li>
                 <li>
-                    <form action="/logout" method="post">
+                    <form action="/logout" method="post" style="display: inline;">
                         <button class="logout" type="submit">Sign out</button>
                     </form>
+                    <a href="http://localhost:3030/api-docs" class="api-link">API</a>
                 </li>
             </ul>
         </div>
@@ -232,7 +261,8 @@
                 <div class="action-item">
                     <div style="display: flex; gap: 10px; justify-content: space-between">
                         <div style="display: flex; flex-direction: column">
-                            <input type="text" id="usernameDelete" placeholder="Username">
+                            <label for="usernameDelete"></label><input type="text" id="usernameDelete"
+                                                                       placeholder="Username">
                             <button id="deleteChat">Delete chat</button>
                         </div>
                         <button id="deleteEverything" style="background: red">Delete everything</button>
@@ -240,13 +270,17 @@
                 </div>
 
                 <div class="action-item">
-                    <div style="display: flex; gap: 20px">
-                        <input type="text" name="getUsername" id="getUsername" placeholder="Username">
-                        <div style="display: flex; flex-direction: column; gap: 10px; justify-content: space-between">
-                            <input type="date" id="userFirstDate">
-                            <input type="date" id="userLastDate">
+                    <div style="display: flex">
+                        <label for="getUsername"></label><input style="margin-right: 20px" type="text"
+                                                                name="getUsername" id="getUsername"
+                                                                placeholder="Username">
+                        <div style="display: flex; flex-direction: column; gap: 10px; justify-content: space-between; margin-right: 20px">
+                            <label for="userFirstDate"></label><input type="date" id="userFirstDate">
+                            <label for="userLastDate"></label><input type="date" id="userLastDate">
                         </div>
-                        <button id="getUserConversationsBetweenDates">Get user conversations</button>
+                        <button id="getUserConversationsBetweenDates" style="margin-right: 20px">Get user
+                            conversations
+                        </button>
                         <div style="width: 100%" id="conversationsByUser"></div>
                     </div>
                 </div>
@@ -254,11 +288,10 @@
                 <div class="action-item">
                     <div style="display: flex; gap: 20px">
                         <div style="display: flex; flex-direction: column; gap: 10px; justify-content: space-between">
-                            <input type="date" id="firstDate">
-                            <input type="date" id="lastDate">
+                            <label for="lastDate"></label><input type="date" id="lastDate">
                         </div>
                         <button id="getConversations">Get conversations</button>
-                        <div style="width: 100%" id="conversations"></div>
+                        <div style="width: 100%; max-height: 95px" id="conversations"></div>
                     </div>
                 </div>
 
@@ -274,11 +307,9 @@
 
 <script>
     document.getElementById('getConversations').addEventListener('click', function () {
-        const firstDate = document.getElementById('firstDate').value;
         const lastDate = document.getElementById('lastDate').value;
-        const username = '<%= user.name || user.username %>';
 
-        fetch(`http://localhost:3030/message/users/date?username=${username}&firstDate=${firstDate}&lastDate=${lastDate}`)
+        fetch(`http://localhost:3030/message/time?date=${lastDate}`)
             .then(response => response.json())
             .then(data => {
                 const conversationsDiv = document.getElementById('conversations');
@@ -352,6 +383,8 @@
                 .catch((error) => {
                     console.error('Erreur:', error);
                 });
+
+            $chat.html('');
         });
 
 

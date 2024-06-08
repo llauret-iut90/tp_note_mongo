@@ -62,7 +62,9 @@ router.get('/register/without', (req, res, next) => {
 });
 
 router.get('/login/without', (req, res, next) => {
-    res.render('loginWithoutGoogle');
+    const messages = req.session.messages;
+    req.session.messages = [];
+    res.render('loginWithoutGoogle', {messages: messages});
 });
 
 router.post('/logout', (req, res, next) => {
