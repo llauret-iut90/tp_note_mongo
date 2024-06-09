@@ -119,7 +119,7 @@ fetch('http://localhost:3030/message', {
 
 #### Actions du chat
 
-- Obteninr un message avec un pattern
+# Obtenir un message avec un pattern
 
 ```js
 $getMsgWithPattern.click(function () {
@@ -152,7 +152,7 @@ static async getMessageWithPattern({pattern}) {
 
 ![](./readmeimg/pattern.gif)
 
-- Supprimmer un chat d'un user
+# Supprimmer un chat d'un user
 
 ```js
 $deleteChat.click(function () {
@@ -184,7 +184,7 @@ $deleteChat.click(function () {
 
 ![](./readmeimg/deletemsguser.gif)
 
-- Delete tout les chat
+# Delete tout les chat
 
 ```js
         $deleteEverything.click(function () {
@@ -215,7 +215,7 @@ $deleteChat.click(function () {
 
 ![](./readmeimg/deleteall.gif)
 
-- Avoir les conversations d'un user entre une entre des dates
+# Avoir les conversations d'un user entre une entre des dates
 
 ```js
 $getUserConversationsBetweenDates.click(function () {
@@ -253,7 +253,7 @@ static async getMessagesFromUserBetweenDates({username, firstDate, lastDate}) {
 
 ![](./readmeimg/getusermsg.gif)
 
-- Avoir des conversations avant une date
+# Avoir des conversations avant une date
 
 ```js
 document.getElementById('getConversations').addEventListener('click', function () {

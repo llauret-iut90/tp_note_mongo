@@ -8,16 +8,32 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/login.css">
 </head>
+<style>
+    .alert {
+        color: red;
+        background-color: #fdd;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+</style>
 <body>
 <section class="prompt">
     <h3>Chat</h3>
-    <h1>Sign in</h1>
+    <h1>Register</h1>
+    <% if (messages && messages.length > 0) { %>
+        <div class="alert">
+            <% messages.forEach(function(message) { %>
+                <p><%= message %></p>
+            <% }); %>
+        </div>
+    <% } %>
     <form action="/register/without" method="post">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username">
         <label for="password">Password:</label>
         <input type="password" id="password" name="password">
-        <input type="submit" value="Sign in">
+        <input type="submit" value="Register">
     </form>
 </section>
 <footer class="info">
