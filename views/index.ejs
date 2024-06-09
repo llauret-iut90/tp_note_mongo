@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/app.css">
     <style>
+        .chat-icon-active {
+            color: red;
+        }
+
         body {
             background: #222;
             font-family: Arial, sans-serif;
@@ -211,6 +215,9 @@
 
     </style>
 </head>
+<nav>
+    <i id="chat-icon" class="chat-icon"></i>
+</nav>
 <body>
 <section>
     <header class="header">
@@ -306,6 +313,10 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
+    window.onload = function () {
+        document.getElementById('chat-icon').classList.add('chat-icon-active');
+    }
+
     document.getElementById('getConversations').addEventListener('click', function () {
         const lastDate = document.getElementById('lastDate').value;
 

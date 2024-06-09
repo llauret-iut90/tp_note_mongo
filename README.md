@@ -1,12 +1,46 @@
 # TP noté mongodb/web
 
-## Objectif :
+# Objectif :
 
 Combiner le tp socket + passport oath pour réaliser un chat en temp réel avec les messages stockés en bdd
 
-## Structure
+# Ce que j'ai fait
 
-### Backend :
+## Socket
+
+- [x] Vous ajoutez un horodatage à chaque message.
+- [] Vous créez un modèle de données pour vos messages de chat et chargez les
+  messages de la base de données lorsque vous ouvrez la page de chat de
+  l'application. (j'utilise le socket pour envoyer les messages à la bdd, et je l'ai stock dans un tableau pour l'
+  affichage mais c'est envoyé à la bdd et je clear le tableau quand je delete tout)
+- [] Vous implémentez une icône dans la barre de navigation qui agit comme un
+  indicateur lorsque la page de chat est active, même lorsque l'utilisateur est sur une
+  autre page.
+
+## Passport
+
+- [x] Permettre aux utilisateurs de s'inscrire sans utiliser Google. Ils doivent pouvoir créer un nouveau compte et
+  utiliser leur nom d'utilisateur et mot de passe pour se connecter.
+
+## MongoDB
+
+- [x] Modifier l'application pour utiliser MongoDB afin de stocker toutes les conversations
+- [x] Enregistrez (inserer) chaque nouveau message dans la collection MongoDB en utilisant les informations utilisateur,
+  la date et l'heure et le contenu du message.
+- [x] Afficher tous les utilisateurs distincts ayant participé aux conversations.
+- [x] Afficher tous les messages d'un utilisateur spécifique.
+- [x] Afficher tous les messages contenant un certain mot ou une certaine phrase.
+- [x] Supprimer tous les messages d'un utilisateur spécifique.
+- [x] Supprimer tous les messages.
+- [x] Afficher tous les messages entre deux dates spécifiques.
+
+## Bonus
+
+Pas fait
+
+# Structure
+
+## Backend :
 
 On y retrouve l'api mongodb avec un swagger pour tester les routes sur le port 3030
 
@@ -83,14 +117,14 @@ class Index {
 Index.main();
 ```
 
-### Front
+## Front
 
 On retrouve l'implémentation de passport et de socket
 
 L'on a aussi des boutons pour se log ou register sans Google, avec des requetes sqlite pour vérifier si l'user existe ou
 non etc.
 
-### Démonstration
+## Démonstration
 
 #### Partie chat
 
